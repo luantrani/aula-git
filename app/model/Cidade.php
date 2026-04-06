@@ -1,58 +1,57 @@
 <?php
 
+declare(strict_types=1);
+
 class Cidade
 {
-    private $id;
-    private $nome;
-    private $estado;
+    private ?int $id = null;
+    private string $nome;
+    private string $estado;
 
-public function __cosntruct(string $nome, string $estado)
-{
-    $this->setnome($nome);
-    $this->setestado($estado);
-}
-
-public function __construct($nome, $estado)
-{
-    $this->setnome($nome);
-    $this->setestado($estado);
-
-}
-public function getid(): ?int
-{
-    return $this->id;
-}
-public function getnome(): string
-{
-    return $this->nome;
-}
-public function getestado(): string
-{
-    return $this->estado;
-}
-public function setid(int $id)
-{ 
-    if ($this->id === null) {
-    $this->id = (int) $id;
-}
- }
-public function setnome(string $nome)
-{
-    $nome = trim($nome);
-        
-    if (empty($nome)){ 
-         throw new Exception("o nome da cidade é obrigatorio.");
-        $this->nome=$nome;
+    public function __construct(string $nome, string $estado)
+    {
+        $this->setNome($nome);
+        $this->setEstado($estado);
     }
-}
-public function setestado(string $estado)
-{
-  $estado = strtoupper (trim($estado));
-  if (strlen($estado) !== 2) {
-    throw new Exception("o estado deve conter exatamente 2 letras.");
-  }
-  $this->estado = $estado;
-}
 
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
 
+    public function getNome(): string
+    {
+        return $this->nome;
+    }
+
+    public function getEstado(): string
+    {
+        return $this->estado;
+    }
+
+    public function setId(int $id): void
+    {
+        if ($this->id !== null) {
+            throw new Exception('O id da cidade já foi definido e não pode ser alterado.');
+        }
+        $this->id = $id;
+    }
+
+    public function setNome(string $nome): void
+    {
+        $nome = trim($nome);
+        if ($nome === '') {
+            throw new Exception('O nome da cidade é obrigatório.');
+        }
+        $this->nome = $nome;
+    }
+
+    public function setEstado(string $estado): void
+    {
+        $estado = strtoupper(trim($estado));
+        if (strlen($estado) !== 2 || !ctype_alpha($estado)) {
+            throw new Exception('O estado deve ser a sigla com exatamente 2 letras (ex.: SP, RJ).');
+        }
+        $this->estado = $estado;
+    }
 }
